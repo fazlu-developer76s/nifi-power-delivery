@@ -98,7 +98,6 @@ class CompanyController extends Controller
         $alllead = $query->orderBy('a.id', 'desc')->get();
         $get_user = User::where('status', 1)
             ->where('role_id', 5)
-            ->where('is_user_verified', 1)
             ->get();
         return view('company.enquiry', compact('alllead', 'get_user'));
     }

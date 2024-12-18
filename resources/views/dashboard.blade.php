@@ -45,7 +45,7 @@
                                         <br>
                                         <span class="opacity-90"  style="font-size: 20px;" >{{ $helper->Propertylist('3'); }} </span>
                                     </div>
-                                
+
                                 </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                                         <br>
                                         <span class="opacity-90"  style="font-size: 20px;" >{{ $helper->Sellers('3'); }} </span>
                                     </div>
-                                
+
                                 </div>
                         </div>
                     </div>
@@ -107,18 +107,18 @@
                                         <br>
                                         <span class="opacity-90"  style="font-size: 20px;" >{{ $helper->Enquiry('3'); }} </span>
                                     </div>
-                                
+
                                 </div>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
-        
+
 
        <div class="row">
             @if($helper->getTablesCount())
-                @foreach($helper->getTablesCount() as $data) 
+                @foreach($helper->getTablesCount() as $data)
                     <div class="col-lg-3">
                         <a href="#">
                             <div class="card">
