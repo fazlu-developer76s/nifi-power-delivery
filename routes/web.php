@@ -24,9 +24,10 @@ use App\Http\Controllers\SeoController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\PermissionCategory;
 use App\Http\Controllers\PermissionsubCategory;
+use App\Http\Controllers\PinController;
 
 Route::get('/', function () {
-    return view('home');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -105,6 +106,13 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
     Route::get('/category/{id}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::post('/category/update', [CategoryController::class, 'update'])->name('category.update');
     Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+
+    // Pincode Route
+    Route::get('/pincode', [PinController::class, 'index'])->name('pincode');
+    Route::match(['get', 'post'], '/pincode/create', [PinController::class, 'create'])->name('pincode.create');
+    Route::get('/pincode/{id}', [PinController::class, 'edit'])->name('pincode.edit');
+    Route::post('/pincode/update', [PinController::class, 'update'])->name('pincode.update');
+    Route::delete('/pincode/delete/{id}', [PinController::class, 'destroy'])->name('pincode.destroy');
 
     // Testimonals Route
     Route::get('/testimonial', [TestimonialController::class, 'index'])->name('testimonial');
@@ -203,6 +211,8 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
     Route::get('pages/{id}/edit', [PagesController::class, 'edit'])->name('pages.edit');
     Route::post('pages/{id}', [PagesController::class, 'update'])->name('pages.update');
     Route::get('enquiry', [CompanyController::class, 'enquiry'])->name('enquiry');
+    Route::get('booking-list', [CompanyController::class, 'booking'])->name('booking');
+    Route::get('feedback-list', [CompanyController::class, 'feedback_list'])->name('feedback');
 
     // enquiry assign
     Route::post('/assign-lead', [LeadController::class, 'assign_lead'])->name('assign.lead');

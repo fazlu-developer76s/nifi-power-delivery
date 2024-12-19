@@ -34,7 +34,7 @@
             margin-bottom: 0.5em;
         }
         .app-sidebar{
-            background: #67722e !important;
+            background: #0a0236 !important;
             color: black !important;
         }
     </style>

@@ -798,6 +798,12 @@ class ApiController extends Controller
         $booking->booking_date = $request->booking_date;
         $booking->booking_time = $request->booking_time;
         $booking->description = $request->description;
+        $booking->vehicle_type =   $get_user->vehicle_type;
+        $booking->vehicle_number =   $get_user->vehicle_number;
+        $booking->pincode =   $get_user->pincode;
+        $booking->name =   $get_user->name;
+        $booking->email =   $get_user->email;
+        $booking->mobile_no =   $get_user->mobile_no;
         $booking->save();
         return response()->json(['status' => 'OK','message' => 'Booking request sent successfully'], 200);
     }

@@ -63,6 +63,32 @@
 
             <div class="menu-item has-sub"> <a href="javascript:;" class="menu-link ">
                     <div class="menu-icon"> <i class="fas fa-list"></i> </div>
+                    <div class="menu-text">Serviceable Area</div>
+                    <div class="menu-caret"></div>
+                </a>
+                <div class="menu-submenu">
+                    <div class="menu-item">
+                        <a href="{{ route('pincode') }}" class="menu-link ">
+                            <div class="menu-text"> Pincode List</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-item has-sub"> <a href="javascript:;" class="menu-link ">
+                    <div class="menu-icon"> <i class="fas fa-list"></i> </div>
+                    <div class="menu-text">Bookings</div>
+                    <div class="menu-caret"></div>
+                </a>
+                <div class="menu-submenu">
+                    <div class="menu-item">
+                        <a href="{{ route('booking') }}" class="menu-link ">
+                            <div class="menu-text"> Booking List</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="menu-item has-sub"> <a href="javascript:;" class="menu-link ">
+                    <div class="menu-icon"> <i class="fas fa-list"></i> </div>
                     <div class="menu-text">Category Management</div>
                     <div class="menu-caret"></div>
                 </a>
@@ -73,7 +99,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
             {{-- <div class="menu-item has-sub"> <a href="javascript:;" class="menu-link ">
@@ -199,10 +225,15 @@
                     </div> --}}
 
                     <div class="menu-item">
+                        <a href="{{ route('feedback') }}" class="menu-link">
+                            <div class="menu-text">Feedback List</div>
+                        </a>
+                    </div>
+                    {{-- <div class="menu-item">
                         <a href="{{ route('enquiry') }}" class="menu-link">
                             <div class="menu-text">Enquiry List</div>
                         </a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 

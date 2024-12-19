@@ -359,16 +359,13 @@ class Global_helper
     public static function getTablesCount()
     {
         $tables = [
-            'Category' => 'categories',
-            'Amenities' => 'amenities',
-            'Bed_Type' => 'bedtypes',
-            'Banner' => 'banners',
-            'Blog' => 'blogs',
+            'Users' => 'users',
+            'Roles' => 'roles',
+            'Pincode' => 'pincodes',
+            'Booking    ' => 'bookings',
             'Review' => 'property_reviews',
         ];
-
         $result = [];
-
         foreach ($tables as $name => $table) {
             $count = DB::table($table)->where('status', 1)->count();
             $result[] = [

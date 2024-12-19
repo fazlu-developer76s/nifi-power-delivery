@@ -144,91 +144,28 @@
     fetchNotes();
 
     function SaveNotes() {
-        var notes = $('#notes').val().trim();
-        var user_id = $('#user_id').val();
         var status = $('#status').val();
         var lead_id = $('#lead_id').val();
-        var hidden_id = $('#hidden_id').val();
-        var route_id = $("#select_route_id").val();
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        if (notes === '') {
-            Swal.fire("Error!", "Notes Title Required!", "error"); // Correct SweetAlert2 syntax
-            return false;
-        }
-
-
         if (status == 5) {
             if (route_id === '') {
                 Swal.fire("Error!", "Please Select Route!", "error"); // Correct SweetAlert2 syntax
                 return false;
             }
         }
-
         $.ajax({
             url: "{{ route('notes.create') }}",
             type: 'POST',
             data: {
                 _token: csrfToken,
-                title: notes,
-                user_id: user_id,
                 status: status,
                 lead_id: lead_id,
-                route_id: route_id,
-                hidden_id: hidden_id
             },
             success: function(response) {
-                if (response == 2) {
-                    Swal.fire("Error!", "Route Does Not Exist for This Zipcode", "error");
-                    return false;
-                }
-                if(status == 5){
+                if (response == 1) {
                     window.location.reload();
+
                 }
-
-                // if (response == 1) {
-                //     Swal.fire({
-                //         title: "Success!",
-                //         text: "Lead Qualified Successfully!",
-                //         icon: "success",
-                //         timer: 2000,
-                //         showConfirmButton: false
-                //     }).then(function() {
-                //         var routeUrl = "{{ route('lead') }}";
-                //         window.location.href = routeUrl;
-                //     });
-                // }
-
-                let loan_status;
-                switch (status) {
-                    case '1':
-                        loan_status = "Pending";
-                        break;
-                    case '2':
-                        loan_status = "View";
-                        break;
-                    case '3':
-                        loan_status = "Under Discussion";
-                        break;
-                    case '4':
-                        loan_status = "Pending Kyc";
-                        break;
-                    case '5':
-                        loan_status = "Qualified";
-                        break;
-                    case '6':
-                        loan_status = "Rejected";
-                        break;
-                    default:
-                        loan_status = "Unknown";
-                        break;
-                }
-
-                $("#fetch_loan_status").html("<p>" + loan_status + "</p>");
-                console.log(response);
-                fetchNotes();
-                $("#notes").val('');
-                $("#hidden_id").val('');
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);

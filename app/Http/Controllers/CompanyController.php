@@ -29,11 +29,6 @@ class CompanyController extends Controller
             'address' => 'required|string|max:500',
             'email' => 'required|email',
             'mobile' => 'required|numeric',
-            'facebook' => 'nullable|url',
-            'twitter' => 'nullable|url',
-            'instagram' => 'nullable|url',
-            'linkedin' => 'nullable|url',
-            'map_link' => 'nullable|string',
         ]);
 
         // Find the company
@@ -53,14 +48,7 @@ class CompanyController extends Controller
         $company->address = $request->address;
         $company->email = $request->email;
         $company->mobile = $request->mobile;
-        $company->facebook = $request->facebook;
-        $company->twitter = $request->twitter;
-        $company->instagram = $request->instagram;
-        $company->linkedin = $request->linkedin;
-        $company->map_link = $request->map_link;
-        $company->header_script = $request->header_script;
-        $company->footer_script = $request->footer_script;
-        $company->map_link = $request->map_link;
+
 
         // Save the updated company
         $company->save();
@@ -100,5 +88,23 @@ class CompanyController extends Controller
             ->where('role_id', 5)
             ->get();
         return view('company.enquiry', compact('alllead', 'get_user'));
+    }
+
+    public function booking(){
+        $title = 'Booking List';
+        $allbooking = DB::table('bookings as a')->
+        join('users as b', 'a.user_id','=','b.id')->
+        select('a.*','b.name as user_name','b.email as user_email','b.mobile_no as user_mobile_no')->
+        where('a.status',1)->where('b.status',1)->orderBy('a.id','desc')->get();
+        return view('company.booking_list', compact('allbooking'));
+    }
+
+    public function feedback_list(){
+        $title = 'Booking List';
+        $allreview = DB::table('property_reviews as a')->
+        join('users as b', 'a.user_id','=','b.id')->
+        select('a.*','b.name as user_name','b.email as user_email','b.mobile_no as user_mobile_no')->
+        where('a.status',1)->where('b.status',1)->orderBy('a.id','desc')->get();
+        return view('company.feedback_list', compact('allreview'));
     }
 }
