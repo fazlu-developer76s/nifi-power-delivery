@@ -37,7 +37,6 @@ Route::post('user/token-status', [AuthController::class, 'getTokenStatus']);
 Route::post('user/signup', [AuthController::class, 'signup']);
 Route::post('user/user-login-otp', [AuthController::class, 'user_otp']);
 Route::post('user/login', [AuthController::class, 'login_bkp']);
-Route::get('fetch-company-info',[ApiController::class, 'fetch_company_info']);
 Route::get('fetch-category',[ApiController::class, 'fetch_category']);
 Route::get('fetch-property',[ApiController::class, 'fetch_property']);
 Route::get('fetch-single-property/{id}',[ApiController::class, 'fetch_single_property']);
@@ -52,6 +51,8 @@ Route::get('fetch-review', [ApiController::class, 'fetch_review']);
 
 Route::middleware(['jwt'])->group(function () {
 
+
+    Route::get('fetch-company-info',[ApiController::class, 'fetch_company_info']);
     // glob stay validate route
     Route::post('user/user-logout', [AuthController::class, 'user_logout']);
     Route::post('user/post-review', [ApiController::class, 'post_review']);
