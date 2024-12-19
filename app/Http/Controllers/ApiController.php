@@ -808,5 +808,39 @@ class ApiController extends Controller
         return response()->json(['status' => 'OK','message' => 'Booking request sent successfully'], 200);
     }
    }
+   public function uploadProfilePicture(Request $request)
+    {
+         $user_id = $request->user->id;
+        // Validate the uploaded file
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB Max
+        ]);
+
+        // Store the file
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('profile-pictures', $filename, 'public');
+            DB::table('users')->where('id',$user_id)->update(['image'=>$path] );
+            // Respond with the file path
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile picture uploaded successfully!',
+                'file_path' => Storage::url($path)
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to upload profile picture.'
+        ], 500);
+    }
+
+     public function get_user(Request $request){
+
+        $user_id = $request->user->id;
+        $get_user = User::find($user_id);
+        return response()->json(['status' => 'OK','message' => 'User details','data' => $get_user], 200);
+    }
 
 }
