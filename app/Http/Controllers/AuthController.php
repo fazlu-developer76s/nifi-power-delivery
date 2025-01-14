@@ -27,6 +27,16 @@ class AuthController extends Controller
                 ], 409);
             }
         }
+        if($request->type == "login"){
+              $user = User::where('mobile_no', $request->mobile_no)->first();
+                if (!$user) {
+                    return response()->json([
+                        'status' => "error",
+                        'message' => "User not found. Please sign up to continue.",
+                    ], 409);
+                }
+
+        }
         if ($otp = $this->userOTP($request->mobile_no)) {
             $this->GenerateOTP($otp, $request->mobile_no);
             return response()->json([
@@ -108,8 +118,8 @@ class AuthController extends Controller
     {
         if ($request->type == "register") {
             $validated = $request->validate([
-                'vehicle_type' => 'required',
-                'vehicle_number' => 'required',
+                // 'vehicle_type' => 'required',
+                // 'vehicle_number' => 'required',
                 'name' => 'required|string|max:255',
                 'mobile_no' => [
                     'required',
@@ -246,7 +256,7 @@ class AuthController extends Controller
             'role' => $role, // Issuer of the token
             'sub' => $user->id,           // Subject of the token (user ID)
             'iat' => time(),              // Issued at time
-            'exp' => time() + 60 * 60       // Expiration time (1 hour)
+            'exp' => time() + 600000 * 600000       // Expiration time (1 hour)
         ];
         // Encode the token
         return JWT::encode($payload, $key, 'HS256');

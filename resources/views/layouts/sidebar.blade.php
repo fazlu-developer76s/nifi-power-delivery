@@ -81,11 +81,37 @@
                 </a>
                 <div class="menu-submenu">
                     <div class="menu-item">
-                        <a href="{{ route('booking') }}" class="menu-link ">
+                        <a href="{{ route('booking',2) }}" class="menu-link ">
                             <div class="menu-text"> Booking List</div>
                         </a>
                     </div>
+                    <div class="menu-item">
+                        <a href="{{ route('booking',1) }}" class="menu-link ">
+                            <div class="menu-text"> Instant Booking</div>
+                        </a>
+                    </div>
                 </div>
+               
+            </div>
+
+            <div class="menu-item has-sub"> <a href="javascript:;" class="menu-link ">
+                    <div class="menu-icon"> <i class="fas fa-list"></i> </div>
+                    <div class="menu-text">Bank Detail</div>
+                    <div class="menu-caret"></div>
+                </a>
+                <div class="menu-submenu">
+                    <div class="menu-item">
+                        <a href="{{ route('bank') }}" class="menu-link ">
+                            <div class="menu-text"> Bank </div>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="{{ route('transaction.list') }}" class="menu-link ">
+                            <div class="menu-text"> Transaction</div>
+                        </a>
+                    </div>
+                </div>
+               
             </div>
             {{-- <div class="menu-item has-sub"> <a href="javascript:;" class="menu-link ">
                     <div class="menu-icon"> <i class="fas fa-list"></i> </div>

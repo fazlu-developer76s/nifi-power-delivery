@@ -177,6 +177,7 @@
                                         <th class="text-nowrap">Full Name</th>
                                         <th class="text-nowrap">Email</th>
                                         <th class="text-nowrap">Phone</th>
+                                        <th class="text-nowrap">SOC</th>
                                         <th class="text-nowrap">Status</th>
                                         <th class="text-nowrap">Created At</th>
                                         <th class="text-nowrap">Action</th>
@@ -198,6 +199,9 @@
                                     @case(4)
                                         @php $booking_status = "Resolve"; @endphp
                                     @break
+                                     @case(5)
+                                        @php $booking_status = "Cancel"; @endphp
+                                    @break
                                     @default
                                         @php $booking_status = "N/A"; @endphp
                                 @endswitch
@@ -209,6 +213,7 @@
                                         <td>{{ ucwords($book->user_name) }}</td>
                                         <td>{{ ucwords($book->user_email) }}</td>
                                         <td>{{ $book->user_mobile_no }}</td>
+                                        <td>{{ $book->soc }}</td>
                                         <td>{{ $booking_status }}</td>
                                         <td>{{ \Carbon\Carbon::parse(@$booking_status->created_at)->format('d F Y h:i A') ?? 'N/A' }}
 

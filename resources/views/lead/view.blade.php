@@ -118,6 +118,10 @@
                                                 <td>{{ @$get_booking->pincode ?? 'N/A' }}</td>
                                             </tr>
                                             <tr>
+                                                <td><strong>SOC:</strong></td>
+                                                <td>{{ @$get_booking->soc ?? 'N/A' }}</td>
+                                            </tr>
+                                            <tr>
                                                 <td><strong>Created At:</strong></td>
                                                 <td>{{ \Carbon\Carbon::parse(@$get_booking->created_at)->format('d F Y h:i A') ?? 'N/A' }}
                                                 </td>
@@ -161,6 +165,7 @@
                                                             <option value="2"{{ @$get_booking->booking_status == 2 ? 'selected' : '' }}>Accept</option>
                                                             <option value="3"{{ @$get_booking->booking_status == 3 ? 'selected' : '' }}>Rejected</option>
                                                             <option value="4"{{ @$get_booking->booking_status == 4 ? 'selected' : '' }}>Resolve</option>
+                                                            <option value="5"{{ @$get_booking->booking_status == 5 ? 'selected' : '' }}>Cancel</option>
                                                         </select>
                                                     </div>
                                                 <td>

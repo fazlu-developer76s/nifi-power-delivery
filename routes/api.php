@@ -52,22 +52,22 @@ Route::get('fetch-review', [ApiController::class, 'fetch_review']);
 Route::middleware(['jwt'])->group(function () {
 
     Route::post('user/upload-profile-picture', [ApiController::class, 'uploadProfilePicture']);
-       Route::get('user/get-user', [ApiController::class, 'get_user']);
+    Route::get('user/get-user', [ApiController::class, 'get_user']);
     Route::get('fetch-company-info',[ApiController::class, 'fetch_company_info']);
     // glob stay validate route
     Route::post('user/user-logout', [AuthController::class, 'user_logout']);
     Route::post('user/post-review', [ApiController::class, 'post_review']);
     Route::post('user/property-whislist', [ApiController::class, 'property_whislist']);
-    // Get all properties
-    Route::get('user/properties', [ApiPropertyController::class, 'index']);
-    // Create a new property (GET and POST handled separately in API context)
-    Route::match(['get', 'post'],'user/properties/create', [ApiPropertyController::class, 'create']);
-    // Edit a property (GET for details)
-    Route::get('user/properties/{id}/edit', [ApiPropertyController::class, 'edit']);
-    // Update a property
-    Route::put('user/properties/{id}', [ApiPropertyController::class, 'update']);
-    // Delete a property
-    Route::delete('user/properties/{id}', [ApiPropertyController::class, 'destroy']);
+    Route::get('user/get-transaction', [ApiController::class, 'get_transaction']);
+    
+    // vehcile routes
+    Route::get('user/vehicle', [ApiPropertyController::class, 'index']);
+    Route::post('user/vehicle/create', [ApiPropertyController::class, 'create']);
+    Route::post('user/vehicle/update', [ApiPropertyController::class, 'update']);
+    Route::get('user/vehicle/{id}', [ApiPropertyController::class, 'edit']);
+    Route::post('user/vehicle/delete/{id}', [ApiPropertyController::class, 'destroy']);
+    
+    
     // Check if data exists
     Route::post('user/properties/check', [ApiPropertyController::class, 'check_exist_data']);
     // Delete an image
@@ -76,6 +76,9 @@ Route::middleware(['jwt'])->group(function () {
     Route::post('user/permission', [ApiController::class, 'permission']);
     Route::post('user/update-profile', [ApiController::class, 'update_profile']);
     Route::post('user/booking',[ApiController::class, 'booking']);
+    Route::get('user/booking/list',[ApiController::class, 'booking_list']);
+    Route::get('user/booking/{id}',[ApiController::class, 'get_booking']);
+    Route::post('user/booking/update',[ApiController::class, 'booking_update']);
 
 
 

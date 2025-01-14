@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\Booking;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -90,12 +91,16 @@ class CompanyController extends Controller
         return view('company.enquiry', compact('alllead', 'get_user'));
     }
 
-    public function booking(){
+    public function booking($id){
         $title = 'Booking List';
-        $allbooking = DB::table('bookings as a')->
+        $query = DB::table('bookings as a')->
         join('users as b', 'a.user_id','=','b.id')->
         select('a.*','b.name as user_name','b.email as user_email','b.mobile_no as user_mobile_no')->
-        where('a.status',1)->where('b.status',1)->orderBy('a.id','desc')->get();
+        where('a.status',1)->where('b.status',1)->orderBy('a.id','desc');
+        if($id){
+            $query->where('a.booking_type',$id);
+        }
+        $allbooking = $query->get();
         return view('company.booking_list', compact('allbooking'));
     }
 
@@ -107,4 +112,48 @@ class CompanyController extends Controller
         where('a.status',1)->where('b.status',1)->orderBy('a.id','desc')->get();
         return view('company.feedback_list', compact('allreview'));
     }
+    
+    public function transaction_list(Request $request){
+        $title = 'Booking List';
+        $query = DB::table('tbl_transaction');
+        if(isset($request->type)){
+            $query->where('user_id',$request->type);
+        }
+        $get_transaction = $query->orderBy('id','desc')->get();
+        $alltransaction = array();
+        foreach($get_transaction as $row){
+            $get_user_info = User::where('status',1)->where('id',$row->user_id)->first();
+            $get_booking_info = Booking::where('status',1)->where('id',$row->booking_id)->first();
+            $get_bank_info = DB::table('banks')->where('status',1)->where('id',$row->active_bank_id)->first();
+            $row->get_user_info = $get_user_info;
+            $row->get_booking_info =  $get_booking_info;
+            $row->get_bank_info =  $get_bank_info;
+            $alltransaction[] = $row;
+        }
+        $get_user = User::where('role_id',2)->where('status',1)->get();
+        return view('company.transaction', compact('alltransaction','get_user'));
+    }
+    
+    
+    public function update_payment_status(Request $request){
+        
+         $request->validate([
+            'payment_status' => 'required',
+            'transaction_amount' => 'required'
+        ]);
+        $update_status = DB::table('tbl_transaction')->where('id',$request->id)->update(['transaction_status'=>2 , 'amount'=> $request->transaction_amount]);
+        $get_tran = DB::table('tbl_transaction')->where('id',$request->id)->first();
+        $bookingUpdate = DB::table('bookings')->where('id', $get_tran->booking_id)->update(['booking_status' => 4]);
+        
+        if($update_status){
+            echo "OK"; die;
+        }else{
+        echo "failed"; die;
+        
+            }
+    
+    }
+    
+    
+    
 }

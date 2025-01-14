@@ -80,6 +80,44 @@
         });
         return false;
     }
+    
+    function updatePaymentStatus(id) {
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    var transactionAmount = $("#transaction_amount" + id).val(); // Fixed selector
+    var paymentStatus = $("#payment_status" + id).val(); // Fixed selector
+
+    if (!transactionAmount) {
+        alert('Please enter an amount.');
+        window.location.reload();
+        return false;
+    }
+
+        $.ajax({
+            url: "{{ route('update.payment.status') }}",
+            type: 'POST', // Corrected method to uppercase
+            data: {
+                _token: csrfToken,
+                transaction_amount: transactionAmount,
+                payment_status: paymentStatus,
+                id: id
+            },
+            success: function(response) {
+                // Provide better feedback to the user
+                if (response=="OK") {
+                    window.location.reload();
+                    // Optionally refresh the data or update UI
+                } else {
+                    alert('Failed to update payment status: ' + (response.message || 'Unknown error.'));
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('An error occurred while updating payment status. Please try again.');
+            }
+        });
+    
+        return false;
+    }
 
     function is_user_verified(table_name, id) {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');

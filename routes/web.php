@@ -36,7 +36,7 @@ Auth::routes();
 Route::middleware(['auth', 'checkRole'])->group(function () {
     // Dashboard Route
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
 
     // Role Routes
     Route::get('/roles', [RoleController::class, 'index'])->name('roles');
@@ -211,8 +211,11 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
     Route::get('pages/{id}/edit', [PagesController::class, 'edit'])->name('pages.edit');
     Route::post('pages/{id}', [PagesController::class, 'update'])->name('pages.update');
     Route::get('enquiry', [CompanyController::class, 'enquiry'])->name('enquiry');
-    Route::get('booking-list', [CompanyController::class, 'booking'])->name('booking');
+    Route::get('booking-list/{id}', [CompanyController::class, 'booking'])->name('booking');
     Route::get('feedback-list', [CompanyController::class, 'feedback_list'])->name('feedback');
+    Route::get('transaction-list', [CompanyController::class, 'transaction_list'])->name('transaction.list');
+    Route::post('update-payment-status', [CompanyController::class, 'update_payment_status'])->name('update.payment.status');
+    
 
     // enquiry assign
     Route::post('/assign-lead', [LeadController::class, 'assign_lead'])->name('assign.lead');
