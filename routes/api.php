@@ -51,6 +51,7 @@ Route::get('fetch-review', [ApiController::class, 'fetch_review']);
 
 Route::middleware(['jwt'])->group(function () {
 
+    Route::post('user/genrate_invoice/{id}', [ApiController::class, 'genrate_invoice']);
     Route::post('user/upload-profile-picture', [ApiController::class, 'uploadProfilePicture']);
     Route::get('user/get-user', [ApiController::class, 'get_user']);
     Route::get('fetch-company-info',[ApiController::class, 'fetch_company_info']);
@@ -59,15 +60,15 @@ Route::middleware(['jwt'])->group(function () {
     Route::post('user/post-review', [ApiController::class, 'post_review']);
     Route::post('user/property-whislist', [ApiController::class, 'property_whislist']);
     Route::get('user/get-transaction', [ApiController::class, 'get_transaction']);
-    
+
     // vehcile routes
     Route::get('user/vehicle', [ApiPropertyController::class, 'index']);
     Route::post('user/vehicle/create', [ApiPropertyController::class, 'create']);
     Route::post('user/vehicle/update', [ApiPropertyController::class, 'update']);
     Route::get('user/vehicle/{id}', [ApiPropertyController::class, 'edit']);
     Route::post('user/vehicle/delete/{id}', [ApiPropertyController::class, 'destroy']);
-    
-    
+
+
     // Check if data exists
     Route::post('user/properties/check', [ApiPropertyController::class, 'check_exist_data']);
     // Delete an image
@@ -102,6 +103,7 @@ Route::middleware(['jwt'])->group(function () {
     Route::post('user/send-message', [MessageController::class, 'sendMessage']);
     Route::post('user/mark-as-read', [MessageController::class, 'markAsRead']);
     Route::post('user/fetch-all-users', [MessageController::class, 'fetchUsers']);
+
 
 
     Route::post('user/user-create-pin', [AuthController::class, 'create_pin']);

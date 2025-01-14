@@ -160,7 +160,7 @@
                                             <option value="">Select User</option>
                                             <option value="{{ $row->id }}"  {{ (isset($_GET['type']) && $_GET['type'] == $row->id) ? 'selected' : '' ;  }}>{{ $row->name }} ({{ $row->mobile_no }})</option>
                                             @endforeach;
-                                        </select> 
+                                        </select>
                                     <input type="submit">
                                     <a href="{{ route('transaction.list') }}"><input type="Submit" value="Clear"></a>
                                     </form>
@@ -183,6 +183,7 @@
                                         <th class="text-nowrap">Amount</th>
                                         <th class="text-nowrap">Created At</th>
                                         <th class="text-nowrap">Payment Status</th>
+                                        <th class="text-nowrap">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -205,7 +206,14 @@
                                                         <option value="1">Pending</option>
                                                         @endif
                                                         <option value="2">Paid</option>
-                                                    </select> 
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    @if($book->transaction_status == 2)
+                                                    <a href="{{ route('generate.invoice', $book->id) }}" class="btn btn-primary">
+                                                        <i class="fas fa-download"></i> Download Invoice
+                                                    </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

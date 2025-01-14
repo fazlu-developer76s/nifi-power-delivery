@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use PDF;
 use App\Models\Blog;
 use App\Models\CategoriesModal;
 use App\Models\CmsModal;
@@ -779,12 +780,12 @@ class ApiController extends Controller
     if (!empty($request->lat) && !empty($request->long)) {
         $apiKey = '9d52cf15543e4b1d9517f51ba60e6961';
         $url = "https://api.opencagedata.com/geocode/v1/json?q={$request->lat}+{$request->long}&key={$apiKey}";
-        
-        
+
+
         // Fetch API response
         $response = file_get_contents($url);
         $responseData = json_decode($response, true);
-        
+
         if (!empty($responseData['results'])) {
         $addressComponents = $responseData['results'][0]['components'];
         }
@@ -792,12 +793,12 @@ class ApiController extends Controller
         if (isset($addressComponents['postcode'])) {
         $user->pincode = $addressComponents['postcode'];
         }
-        
+
         // Save formatted address
         if (isset($responseData['results'][0]['formatted'])) {
         $user->address = $responseData['results'][0]['formatted'];
         }
-        
+
         // Save other components if needed
         $user->city = $addressComponents['city'] ?? null;
         $user->state = $addressComponents['state'] ?? null;
@@ -861,7 +862,7 @@ class ApiController extends Controller
         return response()->json(['status' => 'OK','message' => 'Booking request sent successfully'], 200);
     }
    }
-   
+
    public function booking_list(Request $request){
        $user_id = $request->user->id;
        $get_book_session = DB::table('bookings as a')
@@ -890,9 +891,9 @@ class ApiController extends Controller
         }
 
    }
-   
+
    public function get_booking(Request $request, $id){
-        
+
         $get_booking = DB::table('bookings')->where('id',$id)->first();
          if ($get_booking) {
             return response()->json([
@@ -906,11 +907,11 @@ class ApiController extends Controller
                 'meesage'=> 'data not found'
                 ]);
         }
-    
+
    }
-   
+
    public function booking_update(Request $request){
-       
+
         //  $validated = $request->validate([
         //         'booking_date' => 'required',
         //         'booking_time' => 'required'
@@ -929,11 +930,11 @@ class ApiController extends Controller
         }
         $booking->save();
         return response()->json(['status' => 'OK','message' => 'Booking Schedule update successfully'], 200);
-    
+
    }
-   
-   
-   
+
+
+
    public function uploadProfilePicture(Request $request)
     {
          $user_id = $request->user->id;
@@ -961,16 +962,16 @@ class ApiController extends Controller
             'message' => 'Failed to upload profile picture.'
         ], 500);
     }
-    
+
      public function get_user(Request $request){
-       
+
         $user_id = $request->user->id;
         $get_user = User::find($user_id);
         return response()->json(['status' => 'OK','message' => 'User details','data' => $get_user], 200);
     }
-    
+
     public function get_transaction(Request $request){
-        
+
         $get_transaction = DB::table('tbl_transaction')->where('user_id',$request->user->id)->orderBy('id','desc')->get();
         $new_arr = array();
         foreach($get_transaction as $row){
@@ -995,6 +996,32 @@ class ApiController extends Controller
                 ]);
         }
 
+    }
+
+    public function genrate_invoice(Request $request , $id){
+        $query = DB::table('tbl_transaction');
+        if (isset($request->type)) {
+            $query->where('user_id', $request->type);
+        }
+        if ($id) {
+            $query->where('id', $id);
+        }
+        $get_transaction = $query->orderBy('id', 'desc')->get();
+        $alltransaction = array();
+        foreach ($get_transaction as $row) {
+            $get_user_info = User::where('status', 1)->where('id', $row->user_id)->first();
+            $get_booking_info = Booking::where('status', 1)->where('id', $row->booking_id)->first();
+            $get_bank_info = DB::table('banks')->where('status', 1)->where('id', $row->active_bank_id)->first();
+            $row->get_user_info = $get_user_info;
+            $row->get_booking_info =  $get_booking_info;
+            $row->get_bank_info =  $get_bank_info;
+            $alltransaction[] = $row;
+        }
+        $company_info = DB::table('cms_settings')->where('status', 1)->where('id', 1)->first();
+        $data = array('company_info' => $company_info, 'invoice' => $alltransaction);
+        $pdf = PDF::loadView('company.invoice', $data);
+        // return $pdf->download('invoice.pdf');
+        return $pdf->stream('invoice.pdf');
     }
 
 }

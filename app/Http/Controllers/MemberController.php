@@ -94,6 +94,7 @@ class MemberController extends Controller
             $request->validate([
                 'name' => 'required|string|max:255',
                 'role_id' => 'required',
+                'gst_no' => 'required',
                 'email' => [
                     'required',
                     'email',
@@ -125,6 +126,7 @@ class MemberController extends Controller
             $member = new Member();
             $member->name = $request->name;
             $member->role_id = $request->role_id;
+            $member->gst_no = $request->gst_no;
             $member->email = $request->email;
             $member->mobile_no = $request->mobile_no;
             $member->status = $request->status;
@@ -207,6 +209,9 @@ class MemberController extends Controller
         $member->email = $request->email;
         $member->mobile_no = $request->mobile_no;
         $member->status = $request->status;
+        if($request->gst_no){
+            $member->gst_no = $request->gst_no;
+        }
         $member->save(); // Use save() to persist the changes
 
         // Redirect to the member list with a success message

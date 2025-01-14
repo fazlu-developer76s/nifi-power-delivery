@@ -214,8 +214,9 @@ Route::middleware(['auth', 'checkRole'])->group(function () {
     Route::get('booking-list/{id}', [CompanyController::class, 'booking'])->name('booking');
     Route::get('feedback-list', [CompanyController::class, 'feedback_list'])->name('feedback');
     Route::get('transaction-list', [CompanyController::class, 'transaction_list'])->name('transaction.list');
+    Route::get('/generate-invoice/{id}', [CompanyController::class, 'generateInvoice'])->name('generate.invoice');
     Route::post('update-payment-status', [CompanyController::class, 'update_payment_status'])->name('update.payment.status');
-    
+
 
     // enquiry assign
     Route::post('/assign-lead', [LeadController::class, 'assign_lead'])->name('assign.lead');
