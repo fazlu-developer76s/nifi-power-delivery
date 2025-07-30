@@ -27,14 +27,13 @@ use App\Http\Controllers\PermissionsubCategory;
 use App\Http\Controllers\PinController;
 use App\Http\Controllers\UnsubscribeController;
 
+Route::get('pages/{title}',[RoleController::class, 'get_pages']);
 Route::get('/', function () {
     return view('auth.login');
 });
 
 Auth::routes();
 Route::match(['get', 'post'], '/unsubscribe', [UnsubscribeController::class, 'index'])->name('unsubscribe');
-
-
 // Grouping all routes with auth middleware
 Route::middleware(['auth', 'checkRole'])->group(function () {
     // Dashboard Route

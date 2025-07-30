@@ -27,7 +27,7 @@
                                         <a class="logo logo-admin">
                                            <img src="{{ asset('storage/'.$company->logo) }}" height="70" alt="logo" class="auth-logo">
                                         </a>
-                                        <h4 class="mt-3 mb-1 fw-semibold text-dark font-18 ">Login</h4>
+                                        <h4 class="mt-3 mb-1 fw-semibold text-dark font-18 ">Delete Account</h4>
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">

@@ -51,7 +51,7 @@ Route::get('fetch-review', [ApiController::class, 'fetch_review']);
 
 Route::middleware(['jwt'])->group(function () {
 
-    Route::post('user/genrate_invoice/{id}', [ApiController::class, 'genrate_invoice']);
+    Route::get('user/genrate_invoice/{id}', [ApiController::class, 'genrate_invoice']);
     Route::post('user/upload-profile-picture', [ApiController::class, 'uploadProfilePicture']);
     Route::get('user/get-user', [ApiController::class, 'get_user']);
     Route::get('fetch-company-info',[ApiController::class, 'fetch_company_info']);

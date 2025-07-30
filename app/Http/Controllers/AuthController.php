@@ -19,7 +19,7 @@ class AuthController extends Controller
             ]
         ]);
         if ($request->type == "register") {
-            $user = User::where('mobile_no', $request->mobile_no)->first();
+            $user = User::where('mobile_no', $request->mobile_no)->where('status','!=',3)->first();
             if ($user) {
                 return response()->json([
                     'status' => "Error",
@@ -28,11 +28,17 @@ class AuthController extends Controller
             }
         }
         if($request->type == "login"){
-              $user = User::where('mobile_no', $request->mobile_no)->first();
+              $user = User::where('mobile_no', $request->mobile_no)->where('status',1)->first();
                 if (!$user) {
                     return response()->json([
                         'status' => "error",
                         'message' => "User not found. Please sign up to continue.",
+                    ], 409);
+                }
+                if($user->status == 2){
+                return response()->json([
+                        'status' => "error",
+                        'message' => "This user is Inactive.",
                     ], 409);
                 }
 
@@ -184,9 +190,9 @@ class AuthController extends Controller
                 $user->created_at = now();
                 $user->updated_at = now();
                 $user->save();
-                $get_user = User::where('mobile_no', $request->mobile_no)->first();
+                $get_user = User::where('mobile_no', $request->mobile_no)->where('status',1)->first();
             } else {
-                $get_user = User::where('mobile_no', $request->mobile_no)->first();
+                $get_user = User::where('mobile_no', $request->mobile_no)->where('status',1)->first();
             }
             $role_details = DB::table('roles')
                 ->where('id', $get_user->role_id)
@@ -263,8 +269,10 @@ class AuthController extends Controller
     }
     public function userOTP($mobile_no)
     {
-        $otp = 1234;
-        return $otp;
+        if($mobile_no == "9292929298"){
+            $otp = 1234;
+            return $otp;
+        }
         $entity_id = 1701159540601889654;
         $senderId  = "NRSOFT";
         $temp_id   = "1707164805234023036";

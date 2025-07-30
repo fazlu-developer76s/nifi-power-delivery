@@ -12,7 +12,7 @@ class NotesController extends Controller
     public function create(Request $request)
     {
 
-        DB::table('bookings')->where('id', $request->lead_id)->update(['booking_status'=>$request->status]);
+        DB::table('bookings')->where('id', $request->lead_id)->update(['booking_status'=>$request->status , 'updated_at' => date('Y-m-d H:i:s')]);
         echo 1; die;
 
         if($request->hidden_id){

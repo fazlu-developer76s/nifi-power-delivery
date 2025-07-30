@@ -168,9 +168,14 @@ class CompanyController extends Controller
 
         $request->validate([
             'payment_status' => 'required',
-            'transaction_amount' => 'required'
+            'transaction_amount' => 'required',
+            'file' => 'required|file|mimes:jpg,png,pdf',
         ]);
-        $update_status = DB::table('tbl_transaction')->where('id', $request->id)->update(['transaction_status' => 2, 'amount' => $request->transaction_amount]);
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('uploads', 'public'); // Save file
+            // Save the file path in the database if needed
+        }
+        $update_status = DB::table('tbl_transaction')->where('id', $request->id)->update(['transaction_status' => 2, 'amount' => $request->transaction_amount,'file'=>$filePath]);
         $get_tran = DB::table('tbl_transaction')->where('id', $request->id)->first();
         $bookingUpdate = DB::table('bookings')->where('id', $get_tran->booking_id)->update(['booking_status' => 4]);
 

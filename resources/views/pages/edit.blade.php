@@ -57,7 +57,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Paragraph</label>
-                                            <textarea type="text" name="paragraph"
+                                            <textarea type="text" name="paragraph" id="editor"
                                                       class="form-control @error('paragraph') is-invalid @enderror">{{ old('paragraph', $pages->paragraph) }}</textarea>
                                             @error('paragraph')
                                             <div class="invalid-feedback">{{ $message }}</div>

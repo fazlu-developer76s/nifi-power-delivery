@@ -148,7 +148,12 @@
                                             </tr>
                                             <tr>
                                                 <td><strong>Booking Time:</strong></td>
-                                                <td>{{ isset($get_booking->booking_time) ? date('h:i A', strtotime($get_booking->booking_time)) : 'N/A' }}
+                                                <td>{{ isset($get_booking->booking_time) ? $get_booking->booking_time : 'N/A' }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Modify Date:</strong></td>
+                                                <td>{{ (@$get_booking->updated_at) ?  \Carbon\Carbon::parse(@$get_booking->updated_at)->format('d F Y h:i A') ?? 'N/A' : '' ; }}
                                                 </td>
                                             </tr>
                                             <tr>

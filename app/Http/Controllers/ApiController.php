@@ -765,7 +765,7 @@ class ApiController extends Controller
         $user->long = $request->long;
     }
     // if(!empty($request->lat) && !empty($request->long) ){
-    //     $apiKey = '9d52cf15543e4b1d9517f51ba60e6961';
+    //     $apiKey = 'e3236220140e4313b00c09c7e420d58b';
     //     $url = "https://api.opencagedata.com/geocode/v1/json?q={$request->lat}+{$request->long}&key={$apiKey}";
     //     $response = file_get_contents($url);
     //     $responseData = json_decode($response, true);
@@ -778,14 +778,13 @@ class ApiController extends Controller
     //     }
     // }
     if (!empty($request->lat) && !empty($request->long)) {
-        $apiKey = '9d52cf15543e4b1d9517f51ba60e6961';
+        $apiKey = 'e3236220140e4313b00c09c7e420d58b';
         $url = "https://api.opencagedata.com/geocode/v1/json?q={$request->lat}+{$request->long}&key={$apiKey}";
 
 
         // Fetch API response
         $response = file_get_contents($url);
         $responseData = json_decode($response, true);
-
         if (!empty($responseData['results'])) {
         $addressComponents = $responseData['results'][0]['components'];
         }
@@ -806,6 +805,9 @@ class ApiController extends Controller
         }
         if($request->gst_no){
             $user->gst_no = $request->gst_no;
+        }
+        if($request->status){
+            $user->status = $request->status;
         }
 
     $user->save();
@@ -966,7 +968,7 @@ class ApiController extends Controller
      public function get_user(Request $request){
 
         $user_id = $request->user->id;
-        $get_user = User::find($user_id);
+        $get_user = User::where('status',1)->where('id',$user_id)->first();
         return response()->json(['status' => 'OK','message' => 'User details','data' => $get_user], 200);
     }
 
@@ -983,18 +985,13 @@ class ApiController extends Controller
             $row->get_bank_info =  $get_bank_info;
             $new_arr[] = $row;
         }
-        if ($new_arr) {
+       
             return response()->json([
                 'status' => 'OK',
                 'message' => 'Get Transaction Info',
                 'data' => $new_arr
             ],200);
-        }else{
-            return response()->json([
-                'status' => 'error',
-                'meesage'=> 'data not found'
-                ]);
-        }
+        
 
     }
 

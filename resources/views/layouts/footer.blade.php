@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <p>&copy; {{ date('Y') }} Nerasoft. All rights reserved. Powered by <a href="https://nerasoft.in/"
-                        target="_blank">Nerasoft</a></p>
+                        target="_blank">Nerasofts</a></p>
             </div>
         </div>
     </div>
@@ -21,7 +21,11 @@
     type="text/javascript"></script>
 <script src="{{ asset('assets/js/demo/table-manage-default.demo.js') }}" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
-
+<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor');
+    CKEDITOR.replace('editor2');
+</script>
 <script>
     var thispageurl = window.location.href;
     console.log(thispageurl)
@@ -80,44 +84,62 @@
         });
         return false;
     }
-    
+
     function updatePaymentStatus(id) {
+
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
-    var transactionAmount = $("#transaction_amount" + id).val(); // Fixed selector
-    var paymentStatus = $("#payment_status" + id).val(); // Fixed selector
+    var transactionAmount = $("#transaction_amount" + id).val();
+    var paymentStatus = $("#payment_status" + id).val();
+    if(paymentStatus == 1){
+        alert('Please Select Paid Option.');
+        return false;
+    }
+    var fileInput = $("#file_upload" + id)[0];
 
-    if (!transactionAmount) {
-        alert('Please enter an amount.');
-        window.location.reload();
+    // Validate transaction amount
+    if (!transactionAmount || isNaN(transactionAmount) || transactionAmount <= 0) {
+        alert('Please enter a valid amount.');
         return false;
     }
 
-        $.ajax({
-            url: "{{ route('update.payment.status') }}",
-            type: 'POST', // Corrected method to uppercase
-            data: {
-                _token: csrfToken,
-                transaction_amount: transactionAmount,
-                payment_status: paymentStatus,
-                id: id
-            },
-            success: function(response) {
-                // Provide better feedback to the user
-                if (response=="OK") {
-                    window.location.reload();
-                    // Optionally refresh the data or update UI
-                } else {
-                    alert('Failed to update payment status: ' + (response.message || 'Unknown error.'));
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('An error occurred while updating payment status. Please try again.');
+    // Validate file input
+    if (!fileInput || fileInput.files.length === 0) {
+        alert('Please select a file to upload.');
+        return false;
+    }
+
+    var formData = new FormData();
+    formData.append('_token', csrfToken);
+    formData.append('transaction_amount', transactionAmount);
+    formData.append('payment_status', paymentStatus);
+    formData.append('id', id);
+    formData.append('file', fileInput.files[0]);
+
+    $.ajax({
+        url: "{{ route('update.payment.status') }}",
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            console.log(response);
+            if (response === "OK") {
+                alert(response.message || "Payment status updated successfully.");
+                window.location.reload();
+            } else {
+                alert('Failed to update payment status: ' + (response.message || 'Unknown error.'));
             }
-        });
-    
-        return false;
-    }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('An error occurred while updating payment status. Please try again.');
+        }
+    });
+
+    return false;
+}
+
+
 
     function is_user_verified(table_name, id) {
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
